@@ -1,0 +1,17 @@
+.flex {
+  display: flex;
+}
+.text_center {
+  text-align: center;
+}
+.text_flex_vertical_center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.flex_all_direction_center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

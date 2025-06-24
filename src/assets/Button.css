@@ -1,0 +1,12 @@
+.white_translucent_5r_button {
+  padding: 5px;
+  color: white;
+  border: white 1px solid;
+  border-radius: 5px;
+  background-color: #ffffff50;
+  transition: background-color .2s;
+}
+.white_translucent_5r_button:hover {
+  background-color: #ffffff80;
+  cursor: pointer;
+}
