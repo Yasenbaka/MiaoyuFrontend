@@ -4,11 +4,15 @@ import OAInvoiceSideMenuComp from "@/components/OA/OAInvoice/OAInvoiceSideMenuCo
 </script>
 
 <template>
-  <div style="display: flex; flex-direction: row">
+<!--  <div style="display: flex; flex-direction: row">-->
+<!--    -->
+<!--  </div>-->
+  <el-container>
     <OAInvoiceSideMenuComp/>
-    <RouterView style="width: 70vw"/>
-  </div>
-
+    <el-main style="padding: 0; max-height: calc(100vh - 40px);">
+      <RouterView/>
+    </el-main>
+  </el-container>
 </template>
 
 <style scoped>

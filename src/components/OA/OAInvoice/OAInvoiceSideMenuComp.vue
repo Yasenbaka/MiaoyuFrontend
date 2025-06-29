@@ -1,6 +1,25 @@
 <script setup lang="ts">
+import {
+  View,
+  Switch,
+  Upload
+} from "@element-plus/icons-vue";
+import {markRaw} from "vue";
+import type { Component } from "vue";
+import {useRouter} from "vue-router";
+const router = useRouter();
 
-import {Document, Location, Setting, Menu as IconMenu,} from "@element-plus/icons-vue";
+interface MenuImpl {label: string; value: string; icon?: Component | string; items?: Array<MenuImpl>}
+
+const menuList: Array<MenuImpl> = [
+  {label: "浏览发票", value: "OAInvoiceBrowse", icon: markRaw(View)},
+  {label: "上传发票", value: "OAInvoiceUpload", icon: markRaw(Upload)},
+  {label: "绑定发票", value: "OAInvoiceBind", icon: markRaw(Switch)}
+]
+
+const menuItemClicked = (value: string) => {
+  router.push({name: value});
+}
 
 const handleOpen = (key: string, keyPath: string[]) => {
   console.log(key, keyPath)
@@ -12,8 +31,8 @@ const handleClose = (key: string, keyPath: string[]) => {
 </script>
 
 <template>
-  <menu style="width: 200px; padding: 0">
-    <el-col :span="24">
+  <menu style="min-width: 200px; padding: 0;">
+    <el-col :span="24"  style="max-height: 100vh; overflow: auto;">
       <el-menu
         active-text-color="#ffd04b"
         background-color="#83A8FDFF"
@@ -22,36 +41,24 @@ const handleClose = (key: string, keyPath: string[]) => {
         text-color="#fff"
         @open="handleOpen"
         @close="handleClose"
+        style="min-height: calc(100vh - 40px);"
       >
-        <el-sub-menu index="1">
-          <template #title>
-            <el-icon><location /></el-icon>
-            <span>Navigator One</span>
-          </template>
-          <el-menu-item-group title="Group One">
-            <el-menu-item index="1-1">item one</el-menu-item>
-            <el-menu-item index="1-2">item two</el-menu-item>
-          </el-menu-item-group>
-          <el-menu-item-group title="Group Two">
-            <el-menu-item index="1-3">item three</el-menu-item>
-          </el-menu-item-group>
-          <el-sub-menu index="1-4">
-            <template #title>item four</template>
-            <el-menu-item index="1-4-1">item one</el-menu-item>
+        <template v-for="item in menuList" :key="item.value">
+          <el-sub-menu v-if="item.items?.length" :index="item.value">
+            <template #title>
+              <el-icon><component :is="item.icon"/></el-icon>
+              <span>{{item.label}}</span>
+            </template>
+            <el-menu-item v-for="subItem in item.items" :key="subItem.value" :index="subItem.value" @click="menuItemClicked(subItem.value)">
+              <el-icon><component :is="subItem.icon"/></el-icon>
+              <span>{{subItem.label}}</span>
+            </el-menu-item>
           </el-sub-menu>
-        </el-sub-menu>
-        <el-menu-item index="2">
-          <el-icon><icon-menu /></el-icon>
-          <span>Navigator Two</span>
-        </el-menu-item>
-        <el-menu-item index="3" disabled>
-          <el-icon><document /></el-icon>
-          <span>Navigator Three</span>
-        </el-menu-item>
-        <el-menu-item index="4">
-          <el-icon><setting /></el-icon>
-          <span>Navigator Four</span>
-        </el-menu-item>
+          <el-menu-item v-else @click="menuItemClicked(item.value)">
+            <el-icon><component :is="item.icon"/></el-icon>
+            <span>{{item.label}}</span>
+          </el-menu-item>
+        </template>
       </el-menu>
     </el-col>
   </menu>
